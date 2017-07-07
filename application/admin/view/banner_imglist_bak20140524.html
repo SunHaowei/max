@@ -1,0 +1,93 @@
+{include file="public/header" /}
+<div id="dcWrap">
+    {include file="public/lefter" /}
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>图片管理</strong><b>></b>图片列表</div>
+        <div class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+            <h3><a data-url="{:url('banner/addimg')}" href="javascript:;" class="actionBtn">添加大图</a>大图列表</h3>
+
+
+			<div class="filter">
+                <form action="{:url('banner/imglist')}" method="post">
+                   	 所属分类：
+                    <select name="cat_id" id="cat_id">
+                        <option value="0">所有分类</option>
+                        <option value="45" {if condition="$cat_id_n eq 45"} selected {/if}>媒体介绍</option>
+                        <option value="47" {if condition="$cat_id_n eq 47"} selected {/if}>新闻</option>
+                        <option value="48" {if condition="$cat_id_n eq 48"} selected {/if}>私人影院</option>
+                    </select>
+                   	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 所属条目：
+                    <input name="keyword" type="text" class="inpMain" value="{$keyword_n}" size="30" placeholder='支持模糊查询(不填即查询大分类)'/>
+                    <input name="submit" class="btnGray" type="submit" value="筛选"/>
+                </form>
+            </div>
+
+
+
+            <div class="navList">
+                <table width="100%" border="0" cellpadding="10" cellspacing="0" class="tableBasic">
+                    <tr>
+                        <th width="10" align="center">ID</th>
+                        <!-- <th align="center">标题</th> -->
+                        <th align="center">图片</th>
+                        <th align="center">所属分类</th>
+                        <th align="center">所属条目</th>
+                        <th align="center">添加时间</th>
+                        <th width="200" align="center">操作</th>
+                    </tr>
+                    {volist name="list" id="ba"}
+                    <tr>
+                        <td> {$ba.picid}</td>
+                        <!-- <td align="center"> {$ba.title}</td> -->
+                        
+                        <td align="center"> <img src="{$ba.img}" width="50" height="50" /></td>
+                        
+                        <td align="center"> {$ba.fname}</td>
+                        <td align="center"> {$ba.ftitle}</td>
+                        <td align="center"> {$ba.create_time|date="Y-m-d H:i:s",###}</td>
+                        
+                        <td align="center">
+                        <a class="del btn btn-danger" style="cursor: pointer;" data-id="{$ba.picid}">删除</a></td>
+                    </tr>
+                    {/volist}
+                </table>
+            </div>
+            {$page}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('.actionBtn').click(function(){
+        var url = $(this).data('url');
+        layer.open({
+          title: '添加大图',
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: url
+        });
+    });
+    $('.edit-flink').click(function(){
+        var url = $(this).data('url');
+        layer.open({
+          title: '修改大图',
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: url
+        });
+    });
+    $(".del").click(function(){
+        var id= $(this).data('id');
+        confirms('','是否确认删除id为【'+ id +'】的大图？','',function(){
+            $.get("{:url('banner/deleimg')}",{id:id},function(data){
+                alertw(data);
+            });
+        }); 
+    })
+</script>
+</body>
+</html>

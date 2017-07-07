@@ -1,0 +1,76 @@
+{include file="public/header" /}
+<div id="dcWrap">
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>联系我们</strong></div>
+        <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+       <!--  {:url('flink/add')} -->
+            <h3><!-- <a href="javascript:;" class="actionBtn">添加联系人</a> -->
+            	联系我们（显示顺序为从左至右 编号最大的在最左边，请直接编辑）</h3>
+            <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                <tr>
+                    <th width="30" align="center">编号</th>
+                    <th align="center">地区</th>
+                    <th align="center">联系人</th>
+                    <th align="center">电话</th>
+                    <th align="center">邮箱</th>
+                    <th align="center">地址</th>
+                    <th align="center">创建时间</th>
+                    <th align="center">操作</th>
+                </tr>
+                {volist name="list" id="vo"}
+                <tr>
+                    <td align="center">{$vo.cuid}</td>
+                    <td align="center">{$vo.region}</td>
+                    <td align="center">{$vo.name}</td>
+                    <td align="center">{$vo.phone}</td>
+                    <td align="center">{$vo.email}</td>
+                    <td align="center">{$vo.address}</td>
+                    <td align="center">{$vo.create_time}</td>
+                    <td align="center"><a data-url="{:url('contact/edit',['cuid' => $vo.cuid, 'type' => 2])}" class="btn btn-info edit-flink">编 辑</a> 
+                     <!-- <a class="del btn btn-danger" data-id="{$vo['cuid']}">删除</a> -->
+                     </td>
+                </tr>
+                {/volist}
+            </table>
+            <div class="pager">{$page}</div>
+        </div>
+    </div>
+    <div class="clear"></div>
+    {include file="public/footer" /}
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    $('.actionBtn').click(function(){
+        layer.open({
+          title: '添加联系人',
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: 'add?type=2'
+        });
+    });
+    $('.edit-flink').click(function(){
+        var url = $(this).data('url');
+        layer.open({
+          title: '修改联系人',
+          type: 2,
+          area: ['700px', '530px'],
+          fixed: false, //不固定
+          maxmin: true,
+          content: url
+        });
+    });
+    //删除
+   $(".del").click(function(){
+        var id= $(this).data('id');
+        confirms('','是否确认删除编号为【'+ id +'】的公告？','',function(){
+            $.get("{:url('contact/dele')}",{cuid:id},function(data){
+                alertw(data);
+            });
+        }); 
+    })
+</script>
+</body>
+</html>

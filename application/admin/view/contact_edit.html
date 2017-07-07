@@ -1,0 +1,100 @@
+{include file="public/header" /}
+<script type="text/javascript">
+    var upload_max = 1;
+</script>
+<div id="dcWrap">
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>编辑联系人</strong></div>
+        <div id="manager" class="mainBox" style="height:auto!important;">
+            
+            <form>
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                    <tr>
+                        <td width="100" align="right">地区（中文）</td>
+                        <td>
+                            <input type="text" name="region" size="40" class="inpMain" value="{$item.region}"  required />请勿修改
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">地区（英文）</td>
+                        <td>
+                            <input type="text" name="region_e" size="40" class="inpMain" value="{$item.region_e}" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">地区（阿拉伯）</td>
+                        <td>
+                            <input type="text" name="region_a" size="40" class="inpMain" value="{$item.region_a}" required />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">联系人（中文）</td>
+                        <td>
+                            <input type="text" name="name" size="40" class="inpMain" value="{$item.name}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">联系人（英文）</td>
+                        <td>
+                            <input type="text" name="name_e" size="40" class="inpMain" value="{$item.name_e}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">联系人（阿拉伯）</td>
+                        <td>
+                            <input type="text" name="name_a" size="40" class="inpMain" value="{$item.name_a}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">电话</td>
+                        <td>
+                            <input type="text" name="phone" size="40" class="inpMain" value="{$item.phone}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">邮箱</td>
+                        <td>
+                            <input type="text" name="email" size="40" class="inpMain" value="{$item.email}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">地址（中文）</td>
+                        <td>
+                            <input type="text" name="address" size="40" class="inpMain" value="{$item.address}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">地址（英文）</td>
+                        <td>
+                            <input type="text" name="address_e" size="40" class="inpMain" value="{$item.address_e}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">地址（阿拉伯）</td>
+                        <td>
+                            <input type="text" name="address_a" size="40" class="inpMain" value="{$item.address_a}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="type" value="1" />
+                            <input type="hidden" name="cuid" value="{$item.cuid}" />
+                            <span class="btn">提 交</span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+    {include file="public/footer" /}
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    var art_pro_url = "{:url('contact/add')}";//form表单要提交的地址
+
+</script>
+</body>
+</html>

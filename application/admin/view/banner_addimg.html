@@ -1,0 +1,188 @@
+{include file="public/header" /}
+<script type="text/javascript">
+    var upload_max = 1;
+</script>
+<div id="dcWrap">
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>添加各分类子图</strong></div>
+        <div id="manager" class="mainBox" style="height:auto!important;">
+            
+            <form>
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                    <!-- <tr>
+                        <td width="100" align="right">图片标题(必填)</td>
+                        <td>
+                            <input type="text" name="title" size="40" class="inpMain"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">英文标题(必填)</td>
+                        <td>
+                            <input type="text" name="title_e" size="40" class="inpMain"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">阿拉伯标题(必填)</td>
+                        <td>
+                            <input type="text" name="title_a" size="40" class="inpMain"/>
+                        </td>
+                    </tr> -->
+                    
+                    <tr>
+                        <td align="right">项目分类</td>
+                        <td>
+                            <select name="aid" id='pid' onchange="select_change(this.options[selectedIndex].value)">
+                                <option value="">请选择</option>
+                                <option value="45">媒体介绍</option>
+                                <option value="47">新闻</option>
+                                <option value="48">私人影院</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    <tr id='ason'>
+                        <td align="right">内容分类</td>
+                        <td>
+                            <select name="son" id='son'>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    <tr id='desc1' style="display:none;">
+                        <td align="right">下载页正文(中文)</td>
+                        <td>
+                            <textarea type="text" name="description" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    
+                    <tr id='desc2' style="display:none;">
+                        <td align="right">下载页正文(英文)</td>
+                        <td>
+                            <textarea type="text" name="description_e" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    
+                    <tr id='desc3' style="display:none;">
+                        <td align="right">下载页正文(阿拉伯)</td>
+                        <td>
+                            <textarea type="text" name="description_a" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    <tr id='desc4' style="display:none;">
+                        <td align="right">个性化定制页正文(中文)</td>
+                        <td>
+                            <textarea type="text" name="descriptions" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    
+                    <tr id='desc5' style="display:none;">
+                        <td align="right">个性化定制页正文(英文)</td>
+                        <td>
+                            <textarea type="text" name="descriptions_e" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    
+                    <tr id='desc6' style="display:none;">
+                        <td align="right">个性化定制页正文(阿拉伯)</td>
+                        <td>
+                            <textarea type="text" name="descriptions_a" value="" cols="80" rows="5" class="inpMain"></textarea>
+                        </td>
+                    </tr>
+                    
+                    <!-- <tr id="pt" style="display:none;">
+                        <td align="right">定制类别</td>
+                        <td>
+                            <select name="pttype" id='pttype'>
+                            	<option value="ptsofa">沙发</option>
+                            	<option value="ptwall">墙壁</option>
+                            	<option value="ptfloor">地板</option>
+                            	<option value="ptlighting">灯光</option>
+                            </select>
+                        </td>
+                    </tr> -->
+                    
+                    
+                    <tr>
+                        <!--上传图片-->
+                        {include file="public/upload" tip="图片"}
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <span class="btn">提 交</span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+    {include file="public/footer" /}
+    <div class="clear"></div>
+</div>
+
+<script>
+
+function select_change(type){
+	
+    //if (type == 49){  
+    //	$('#ason').hide();
+    //	$('#pt').show();
+    //}else{
+    //	$('#ason').show();
+    //	$('#pt').hide();
+    //}  
+	
+    if(type == 48){
+    	$('#desc1').show();
+    	$('#desc2').show();
+    	$('#desc3').show();
+    	$('#desc4').show();
+    	$('#desc5').show();
+    	$('#desc6').show();
+    }else{
+    	$('#desc1').hide();
+    	$('#desc2').hide();
+    	$('#desc3').hide();
+    	$('#desc4').hide();
+    	$('#desc5').hide();
+    	$('#desc6').hide();
+    }
+	
+	
+	var cityEle = document.getElementById("son");
+	cityEle.innerHTML = ""; 
+	
+      $.ajax({
+          type: "post",
+          data:{'type':type},
+          dataType: "json",
+          url: "{:url('banner/sonlist')}",
+          success: function (msg) {
+        	  //console.log(msg['data']);
+        	  //var provinceValue = this.value;
+        	    for(var i = 0;i<msg['data'].length;i++){
+        			var option = document.createElement('option');
+        		    var textNode = document.createTextNode(msg['data'][i]['title']);
+        		    option.appendChild(textNode);
+        		    option.value = msg['data'][i]['id'];
+        		    cityEle.appendChild(option);
+        	    }
+          }
+      });
+	
+	
+	
+}
+
+</script>
+
+<script type="text/javascript">
+    var art_pro_url = "{:url('banner/addimg')}";//form表单要提交的地址
+
+</script>
+</body>
+</html>

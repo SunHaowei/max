@@ -1,0 +1,82 @@
+{include file="public/header" /}
+<script type="text/javascript">
+    var upload_max = 1;
+</script>
+<div id="dcWrap">
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>添加私人定制子图</strong></div>
+        <div id="manager" class="mainBox" style="height:auto!important;">
+            
+            <form>
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                    <tr>
+                        <td width="100" align="right">图片标题(必填)</td>
+                        <td>
+                            <input type="text" name="title" size="40" class="inpMain"/>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                        <td width="100" align="right">英文标题(必填)</td>
+                        <td>
+                            <input type="text" name="title_e" size="40" class="inpMain"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">阿拉伯标题(必填)</td>
+                        <td>
+                            <input type="text" name="title_a" size="40" class="inpMain"/>
+                        </td>
+                    </tr> -->
+                    
+                    
+                    <tr>
+                        <td align="right">风格分类</td>
+                        <td>
+                            <select name="styleid" id='styleid'>
+                            {volist name='style' id='va'}
+                            	<option value="{$va.sid}">{$va.title}</option>
+                            {/volist}	
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <td align="right">产品分类</td>
+                        <td>
+                            <select name="pttype" id='pttype'>
+                            	<option value="ptsofa">沙发</option>
+                            	<option value="ptwall">墙布</option>
+                            	<option value="ptfloor">地毯</option>
+                            	<option value="ptlighting">墙上模块</option>
+                            </select>
+                        </td>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <!--上传图片-->
+                        {include file="public/upload" tip="图片"}
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <span class="btn">提 交</span>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+    {include file="public/footer" /}
+    <div class="clear"></div>
+</div>
+
+<script type="text/javascript">
+    var art_pro_url = "{:url('banner/addstimg')}";//form表单要提交的地址
+
+</script>
+</body>
+</html>

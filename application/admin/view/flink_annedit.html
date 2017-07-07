@@ -1,0 +1,126 @@
+{include file="public/header" /}
+<script type="text/javascript">
+    var upload_max = 1;
+</script>
+
+<style>
+.btn_new {
+ display: inline-block;
+ background-color: #0072C6;
+ -moz-border-radius: 2px;
+ -webkit-border-radius: 2px;
+ border: 0;
+ color: #FFF;
+ padding: 6px 15px;
+ font-weight: bold;
+ text-transform: capitalize;
+ cursor: pointer;
+ -webkit-appearance: none;
+ border-radius: 4px;
+}
+</style>
+
+<div id="dcWrap">
+    <div id="dcMain">
+        <!-- 当前位置 -->
+        <div id="urHere">管理中心<b>></b><strong>传统影院</strong></div>
+        <div id="manager" class="mainBox" style="height:auto!important;">
+            
+            <form action="{:url('flink/add')}" method="post" enctype="multipart/form-data">
+                <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+                    <tr>
+                        <td width="100" align="right">标题（中文）</td>
+                        <td>
+                            <input type="text" name="title" size="40" class="inpMain" value="{$item.title}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">标题（英文）</td>
+                        <td>
+                            <input type="text" name="title_e" size="40" class="inpMain" value="{$item.title_e}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">标题（阿拉伯）</td>
+                        <td>
+                            <input type="text" name="title_a" size="40" class="inpMain" value="{$item.title_a}"/>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td width="100" align="right">副标题（中文）</td>
+                        <td>
+                            <input type="text" name="stitle" size="40" class="inpMain" value="{$item.stitle}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">副标题（英文）</td>
+                        <td>
+                            <input type="text" name="stitle_e" size="40" class="inpMain" value="{$item.stitle_e}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="100" align="right">副标题（阿拉伯）</td>
+                        <td>
+                            <input type="text" name="stitle_a" size="40" class="inpMain" value="{$item.stitle_a}"/>
+                        </td>
+                    </tr>
+                    
+                    
+                    <tr>
+                        <td align="right">内容（中文）</td>
+                        <td>
+                            <textarea type="text" name="description" value="" cols="80" rows="5" class="inpMain">{$item.description}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">内容（英文）</td>
+                        <td>
+                            <textarea type="text" name="description_e" value="" cols="80" rows="5" class="inpMain">{$item.description_e}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right">内容（阿拉伯）</td>
+                        <td>
+                            <textarea type="text" name="description_a" value="" cols="80" rows="5" class="inpMain">{$item.description_a}</textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <!--上传图片-->
+                        {include file="public/upload" tip="图片"}
+                    </tr>
+                    
+                    <tr>
+                        <td width="100" align="right">视频</td>
+                        <td>预览：
+                        	<video src="{$item.url}" controls width="130px" height="100px">
+							您的浏览器不支持 预览。
+							</video>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="file" name="video_url" size="40" class="inpMain" value="{$item.url}"/>
+                            	（不选表示不修改）
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td></td>
+                        <td>
+                            <input type="hidden" name="type" value="2" />
+                            <input type="hidden" name="id" value="{$item.id}" />
+                            <input class='btn_new' type="submit" value="提 交" />
+                            <!-- <span class="btn">提 交</span> -->
+                        </td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class="clear"></div>
+    {include file="public/footer" /}
+    <div class="clear"></div>
+</div>
+<script type="text/javascript">
+    var art_pro_url = "{:url('flink/add')}";//form表单要提交的地址
+
+</script>
+</body>
+</html>
