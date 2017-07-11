@@ -23,7 +23,7 @@
 <div id="dcWrap">
     <div id="dcMain">
         <!-- 当前位置 -->
-        <div id="urHere">管理中心<b>></b><strong>添加</strong></div>
+        <div id="urHere">管理中心<b>></b><strong>传统影院</strong></div>
         <div id="manager" class="mainBox" style="height:auto!important;">
             
             <form action="{:url('flink/add')}" method="post" enctype="multipart/form-data">
@@ -31,79 +31,81 @@
                     <tr>
                         <td width="100" align="right">标题（中文）</td>
                         <td>
-                            <input type="text" name="title" size="40" class="inpMain" required="true" />
+                            <input type="text" name="title" size="40" class="inpMain" value="{$item.title}"/>
                         </td>
                     </tr>
                     <tr>
                         <td width="100" align="right">标题（英文）</td>
                         <td>
-                            <input type="text" name="title_e" size="40" class="inpMain" required="true" />
+                            <input type="text" name="title_e" size="40" class="inpMain" value="{$item.title_e}"/>
                         </td>
                     </tr>
                     <tr>
                         <td width="100" align="right">标题（阿拉伯）</td>
                         <td>
-                            <input type="text" name="title_a" size="40" class="inpMain" required="true" />
+                            <input type="text" name="title_a" size="40" class="inpMain" value="{$item.title_a}"/>
                         </td>
                     </tr>
                     
                     <tr>
                         <td width="100" align="right">副标题（中文）</td>
                         <td>
-                            <input type="text" name="stitle" size="40" class="inpMain" value=""/>
+                            <input type="text" name="stitle" size="40" class="inpMain" value="{$item.stitle}"/>
                         </td>
                     </tr>
                     <tr>
                         <td width="100" align="right">副标题（英文）</td>
                         <td>
-                            <input type="text" name="stitle_e" size="40" class="inpMain" value=""/>
+                            <input type="text" name="stitle_e" size="40" class="inpMain" value="{$item.stitle_e}"/>
                         </td>
                     </tr>
                     <tr>
                         <td width="100" align="right">副标题（阿拉伯）</td>
                         <td>
-                            <input type="text" name="stitle_a" size="40" class="inpMain" value=""/>
+                            <input type="text" name="stitle_a" size="40" class="inpMain" value="{$item.stitle_a}"/>
                         </td>
                     </tr>
+                    
                     
                     <tr>
                         <td align="right">内容（中文）</td>
                         <td>
-                            <textarea type="text" name="description" value="" cols="80" rows="5" class="inpMain" required="true"></textarea>
+                            <textarea type="text" name="description" value="" cols="80" rows="5" class="inpMain">{$item.description}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="right">内容（英文）</td>
                         <td>
-                            <textarea type="text" name="description_e" value="" cols="80" rows="5" class="inpMain" required="true"></textarea>
+                            <textarea type="text" name="description_e" value="" cols="80" rows="5" class="inpMain">{$item.description_e}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <td align="right">内容（阿拉伯）</td>
                         <td>
-                            <textarea type="text" name="description_a" value="" cols="80" rows="5" class="inpMain" required="true"></textarea>
+                            <textarea type="text" name="description_a" value="" cols="80" rows="5" class="inpMain">{$item.description_a}</textarea>
                         </td>
                     </tr>
                     <tr>
                         <!--上传图片-->
                         {include file="public/upload" tip="图片"}
                     </tr>
-                    <!--20170710-->
+                    
                     <tr>
-                        <!--上传图片(阿拉伯)-->
-                        {include file="public/upload_a" tip="图片(阿拉伯)"}
-                    </tr>
-                    <tr>
-                        <td align="right">视频</td>
-                        <td>
-                            <input type="file" name='video_url' size="40" class="inpMain" required="true" ><!-- </input> <a href='#'>点击上传</a> -->
+                        <td width="100" align="right">视频</td>
+                        <td>预览：
+                        	<video src="{$item.url}" controls width="130px" height="100px">
+							您的浏览器不支持 预览。
+							</video>&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="file" name="video_url" size="40" class="inpMain" value="{$item.url}"/>
+                            	（不选表示不修改）
                         </td>
                     </tr>
+                    
                     <tr>
                         <td></td>
                         <td>
                             <input type="hidden" name="type" value="2" />
-                            <input type="hidden" name="id" value="" />
+                            <input type="hidden" name="id" value="{$item.id}" />
                             <input class='btn_new' type="submit" value="提 交" />
                             <!-- <span class="btn">提 交</span> -->
                         </td>

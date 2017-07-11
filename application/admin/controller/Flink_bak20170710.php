@@ -76,13 +76,6 @@ class Flink extends Common
             }else{
             	$params['logo'] = '';
             }
-            // 阿拉伯图片
-            if (isset($params['pic_url_a'])) {
-                $params['logo_a'] = implode('|',$params['pic_url_a']);
-                unset($params['pic_url_a']);
-            }else{
-                $params['logo_a'] = '';
-            }
             
             if (!$params['id']) {
                 

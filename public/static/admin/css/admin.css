@@ -14,8 +14,13 @@
     width: 88px;
     height: 75px;
 }
-#images_area{
-	float: left;
+/*#images_area{*/
+	/*float: left;*/
+    /*margin-right: 5px;*/
+/*}*/
+/*20170710*/
+#images_area, #images_area_a{
+    float: left;
     margin-right: 5px;
 }
 .btn_up{

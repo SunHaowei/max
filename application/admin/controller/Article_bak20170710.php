@@ -108,13 +108,6 @@ class Article extends Common
             }else{
                 $params['litpic'] = '';
             }
-            // 阿拉伯图片
-            if (isset($params['pic_url_a'])) {
-                $params['litpic_a'] = implode('|',$params['pic_url_a']);
-                unset($params['pic_url_a']);
-            }else{
-                $params['litpic_a'] = '';
-            }
 
             if(!$params['cid']){
                 exit(json_encode(['status' => 0, 'msg' => '请先选择分类', 'url' => '']));
