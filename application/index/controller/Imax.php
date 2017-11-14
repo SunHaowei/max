@@ -54,7 +54,7 @@ class Imax extends Common{
     public function traditionCinema(){
         // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('flink')
-        ->field("stitle,stitle_e,stitle_a,title,title_e,title_a,logo as img, logo_a as img_a,description,description_e,description_a,url as videourl")
+        ->field("stitle,stitle_e,stitle_a,title,title_e,title_a,logo as img, logo_a as img_a,description,description_e,description_a,url as videourl, videoimg, videoimg_a")
         ->where(['status'=>0,'type'=>2])
         ->order('id DESC')
         ->select();
@@ -64,6 +64,9 @@ class Imax extends Common{
             $lists[$k]['videourl'] = Config('service_url').$v['videourl'];
             // 如果没有阿拉伯图片,则用默认图片
             $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
+			// 视频缩略图
+	        $lists[$k]['videoimg'] = $v['videoimg'] ? Config('service_url').$v['videoimg'] : '';
+	        $lists[$k]['videoimg_a'] = $v['videoimg_a'] ? Config('service_url').$v['videoimg_a'] : $lists[$k]['videoimg'];
         }
         $this->successed($lists);
     }

@@ -1,0 +1,88 @@
+<!--上传图片-->
+{load href="__PUBLIC__/js/jquery.form.min.js" /}
+<script type="text/javascript">
+    var uploadUrl = "{:url('main/upload')}";
+</script>
+<td align="right">[tip]</td>
+<td>
+<div class="litpic_show"> 
+    <div id="images_area_[name]" class="images_areas">
+        <!-- 2017-11-14 -->
+        {if condition="isset($item['[name]'])and $item['[name]'] neq null" }
+        <div class="picture_item">
+            <img src="{$item['[name]']}" width="110" height="110">
+            <div class="upload_success"></div>
+            <div class="index_picture">设为封面</div>
+            <div class="layui-layer-ico picture_del "></div>
+            <input type="hidden" name="[name][]" value="{$item['[name]']}" />
+        </div>
+        <div class="clear"></div>
+        {/if}
+    </div>                  
+
+    <div class="btn_up">
+        <a href="javascript:;" class="file">
+            <input type="file" name="pic_url" id="picture_upload_[name]">
+        </a>
+        <div class="tip tip_type_[name]"></div>
+    </div>
+</div>
+</td>
+<script type="text/javascript">
+$(function () {
+    //图片上传
+    upload_max = typeof(upload_max) == 'undefined'?1:upload_max;
+    
+    var $imgarea = $('#images_area_[name]');
+    var $tip = $(".tip_type_[name]");
+    $("#picture_upload_[name]").wrap("<form id='picture_form_[name]' action='{:url('main/upload')}' method='post' enctype='multipart/form-data'></form>");
+    $("#picture_upload_[name]").change(function(){
+        if($("#picture_upload_[name]").val() == "") return;
+        if ($("#images_area_[name]>.picture_item").length >= upload_max ) {alerts('最多上传'+ upload_max +'张图片');return;}
+    
+        $("#picture_form_[name]").ajaxSubmit({
+            dataType:  'json',
+            beforeSend: function() {
+                $tip.html("上传中...").show();
+            },
+            success: function(data) {
+                if(data.status == 1){    
+                    $tip.hide();                   
+                    var img = data.path;
+                    var picture_html= '<div class="picture_item"><img src="'+ img +'" width="110" height="110"><div class="upload_success"></div><div class="index_picture">设为封面</div><div class="layui-layer-ico picture_del"></div><input type="hidden" name="[name][]" value="'+ img +'" /></div>';
+                    $('#images_area_[name]').append(picture_html);
+                }else {
+                    $tip.html(data.error);   
+                }           
+
+            },
+            error:function(xhr){
+                console.log(xhr);
+                alerts("上传失败"+xhr+",请重新选择上传");
+            }
+        });
+    });
+
+    //删除图片
+    $('#images_area_[name]').on('click','.picture_del',function () {
+        var $this = $(this);
+        var img = $this.next().val();
+        $this.parent().remove();
+        /*$.post("{:url('main/upload')}",{path:img,act:'del'},function(data){
+            if(data.status == 1){
+                alerts(data.msg);
+                $this.parent().remove();
+            }else{
+                alerts(data.msg);
+            }
+        },'json');*/        
+    });
+
+    //设为封面
+    $('#images_area_[name]').on('click','.index_picture',function () {
+        var $parent = $(this).parents('.picture_item');
+        $(this).parent().remove();
+        $('#images_area_[name]').prepend($parent);
+    });
+});
+</script>

@@ -83,6 +83,19 @@ class Flink extends Common
             }else{
                 $params['logo_a'] = '';
             }
+
+            // 视频缩略图
+	        if (isset($params['videoimg'])) {
+		        $params['videoimg'] = implode('|',$params['videoimg']);
+	        }else{
+		        $params['videoimg'] = '';
+	        }
+
+	        if (isset($params['videoimg_a'])) {
+		        $params['videoimg_a'] = implode('|',$params['videoimg_a']);
+	        }else{
+		        $params['videoimg_a'] = '';
+	        }
             
             if (!$params['id']) {
                 
