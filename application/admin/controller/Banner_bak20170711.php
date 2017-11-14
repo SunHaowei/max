@@ -131,10 +131,12 @@ class Banner extends Common
     
     /**
      * 添加banner内容
+     *
+     * @date 20170524
      */
     public function addimg(){
         if (request()->isAjax()) {
-            //新增处理
+
             $params = input('post.');
             
 //             if(empty($params['title'])){
@@ -190,15 +192,34 @@ class Banner extends Common
                 $da['parentid'] = 0;
                 $da['cate'] = $params['pttype'];
             }
-            
-            
-            $flag = Db::name('all_img')->insert($da);
-            
-            if ($flag) {
-                exit(json_encode(['status' => 1, 'msg' => '添加成功', 'url' => url('banner/addimg')]));
-            }else{
-                exit(json_encode(['status' => 0, 'msg' => '添加失败', 'url' => '']));
+
+            // 20170524修改为含有新增和更新两种方法判断
+            if (!isset($params['id'])) {
+                // 新增
+                $flag = Db::name('all_img')->insert($da);
+
+                if ($flag) {
+                    exit(json_encode(['status' => 1, 'msg' => '添加成功', 'url' => url('banner/addimg')]));
+                }else{
+                    exit(json_encode(['status' => 0, 'msg' => '添加失败', 'url' => '']));
+                }
+            } else {
+                // 更新
+
+                $id = $params['id'];
+                unset($da['create_time']);
+                unset($da['status']);
+                $flag = Db::name('all_img')->where(array('id' => $id))->update($da);
+
+                if ($flag) {
+                    exit(json_encode(['status' => 1, 'msg' => '更新成功', 'url' => url('banner/addimg')]));
+                }else{
+                    exit(json_encode(['status' => 0, 'msg' => '更新失败', 'url' => '']));
+                }
             }
+            
+            
+
     
         }else{
             return $this->fetch();
@@ -245,6 +266,29 @@ class Banner extends Common
             $this->assign('style',$lists);
             return $this->fetch();
         }
+    }
+
+    /**
+     * 编辑图片管理
+     *
+     * @param $id
+     * @return mixed
+     * @date 20170524
+     */
+    public function editimg($id)
+    {
+        $where = array();
+        $where['ai.id'] = $id;
+        $data = Db::name('all_img ai')
+            ->field("ai.title,ai.id as picid,ai.img,ai.create_time,ai.parentid,a.title as ftitle,a.cid,a.id as aid,c.name as fname, ai.description, ai.description_e, ai.description_a, ai.descriptions, ai.descriptions_e, ai.descriptions_a")
+            ->join("yl_article a","a.id = ai.parentid")
+            ->join("yl_category c","c.id = a.cid")
+            ->where($where)
+            ->order('ai.create_time DESC')->find();
+
+        $this->assign('item', $data);
+
+        return $this->fetch();
     }
     
     public function imglist(){

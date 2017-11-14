@@ -33,13 +33,16 @@ class Imax extends Common{
      * 私家影院（小房子）
      */
     public function indexCinema(){
+        // 20170710 列表数据里增加阿拉伯图片
         $lists = Db::name('article')
-            ->field("stitle,stitle_e,stitle_a,id as icid,title,title_e,title_a,litpic as img,description ,description_e ,description_a ")
+            ->field("stitle,stitle_e,stitle_a,id as icid,title,title_e,title_a,litpic as img,litpic_a as img_a,description ,description_e ,description_a ")
             ->where(['status'=>0,'cid'=>50])
             ->order('publishtime DESC')
             ->select();
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
+            // 如果没有阿拉伯图片,则用默认图片
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         $this->successed($lists);
     }
@@ -49,9 +52,9 @@ class Imax extends Common{
      * 传统影院
      */
     public function traditionCinema(){
-        
+        // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('flink')
-        ->field("stitle,stitle_e,stitle_a,title,title_e,title_a,logo as img,description,description_e,description_a,url as videourl")
+        ->field("stitle,stitle_e,stitle_a,title,title_e,title_a,logo as img, logo_a as img_a,description,description_e,description_a,url as videourl")
         ->where(['status'=>0,'type'=>2])
         ->order('id DESC')
         ->select();
@@ -59,6 +62,8 @@ class Imax extends Common{
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
             $lists[$k]['videourl'] = Config('service_url').$v['videourl'];
+            // 如果没有阿拉伯图片,则用默认图片
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         $this->successed($lists);
     }
@@ -84,10 +89,12 @@ class Imax extends Common{
     public function privateCinema(){
         
         $params = input('pcid');
-        
-        
+
+        // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('all_img ai')
-            ->field("ya.stitle,ya.stitle_e,ya.stitle_a,ai.description as xia_description,ai.description_e as xia_description_e,ai.description_a as xia_description_a, ai.descriptions as ge_description,ai.descriptions_e as ge_description_e,ai.descriptions_a as ge_description_a, ai.img,ya.id as pcid,ya.title,ya.title_e,ya.title_a,ya.litpic as parentimg,ya.description ,ya.description_e ,ya.description_a,ya.jumpurl as downurl ")
+            ->field("ya.stitle,ya.stitle_e,ya.stitle_a,ai.description as xia_description,ai.description_e as xia_description_e,
+            ai.description_a as xia_description_a, ai.descriptions as ge_description,ai.descriptions_e as ge_description_e,ai.descriptions_a as ge_description_a, 
+            ai.img, ai.img_a,ya.id as pcid,ya.title,ya.title_e,ya.title_a,ya.litpic as parentimg, ya.litpic_a as parentimg_a, ya.description ,ya.description_e ,ya.description_a,ya.jumpurl as downurl ")
             ->join('yl_article ya','ai.parentid = ya.id')
             ->where(['ya.status'=>0,'ya.id'=>$params,'ya.cid'=>48])
             ->order('create_time DESC')
@@ -95,8 +102,10 @@ class Imax extends Common{
         
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];    // 20170711
             $lists[$k]['downurl'] = Config('service_url').$v['downurl'];
             $lists[$k]['parentimg'] = Config('service_url').$v['parentimg'];    // 20170524
+            $lists[$k]['parentimg_a'] = $v['parentimg_a'] ? Config('service_url').$v['parentimg_a'] : Config('service_url').$v['parentimg'];    // 20170711
         }
         
         $this->successed($lists);
@@ -139,14 +148,15 @@ class Imax extends Common{
      * 私人定制风格列表
      */
     public function personalList(){
-        
+        // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('article')
-        ->field("id as plid,title,title_e,title_a,litpic as img")
+        ->field("id as plid,title,title_e,title_a,litpic as img, litpic_a as img_a")
         ->where(['status'=>0,'cid'=>51])
         ->order('publishtime DESC')
         ->select();
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         $this->successed($lists);
     }
@@ -160,8 +170,14 @@ class Imax extends Common{
     public function ptcate(){
         $plid = input('plid');
         $cate = input('cate');
+
+        // 20170711 没有参数返回空数组, 原来没有此判断接口会报错
+        if (empty($plid) || empty($cate)) {
+            $this->successed(array());
+        }
         
         $lists = Db::name('article')->field($cate)->where(['author'=>$plid])->group($cate)->select();
+        $arr = array();
         foreach($lists as $kk=>$vv){
             $one = Db::name('article')->field('id')->where([$cate=>$vv[$cate]])->find();
             $arr[] = $one['id'];
@@ -169,7 +185,8 @@ class Imax extends Common{
 		$str = "(".implode(',',$arr).")";
         $where=" id IN ".$str;
 		if($cate=='ptlighting'){$where=" status=0 and id IN ".$str;}
-        $fainllist = Db::name('article')->field('id as yyy,litpic as img,'.$cate.' as id')->where($where)->select();
+        // 20170711 列表数据里增加阿拉伯图片
+        $fainllist = Db::name('article')->field('id as yyy,litpic as img,litpic_a as img_a,'.$cate.' as id')->where($where)->select();
         
 //         $gb = $cate.',litpic';
 //         $lists = Db::name('article')->field('litpic as img,'.$cate.' as id')->where(['author'=>$plid])->group($gb)->order('id DESC')->select();
@@ -185,6 +202,7 @@ class Imax extends Common{
         
         foreach($fainllist as $k=>$v){
             $fainllist[$k]['img'] = Config('service_url').$v['img'];
+            $fainllist[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         $imgss['lists'] = $fainllist;
         
@@ -215,14 +233,16 @@ class Imax extends Common{
         $ptwall = input('ptwallid');
         $ptfloor = input('ptfloorid');
         $ptlighting = input('ptlightingid');
-        
+
+        // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('article')
-        ->field("id as ptid,title,title_e,title_a,litpic as img,description,description_e,description_a")
+        ->field("id as ptid,title,title_e,title_a,litpic as img,litpic_a as img_a,description,description_e,description_a")
         ->where(['ptsofa'=>$ptsofa,'ptwall'=>$ptwall,'ptfloor'=>$ptfloor,'ptlighting'=>$ptlighting,'status'=>0,'author'=>$plid])
         ->order('id DESC')
         ->select();
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         $this->successed($lists);
     }
@@ -284,15 +304,17 @@ class Imax extends Common{
     public function mediainTroduction(){
         
         $type = input('type');
-        
+
+        // 20170711 列表数据里增加阿拉伯图片
         $lists = Db::name('article')
-        ->field("id as mtid,title,title_e,title_a,litpic as img,description as absort,description_e as absort_e,description_a as absort_a")
+        ->field("id as mtid,title,title_e,title_a,litpic as img,litpic_a as img_a,description as absort,description_e as absort_e,description_a as absort_a")
         ->where(['status'=>0,'cid'=>$type])
         ->order('publishtime DESC')
         ->select();
         
         foreach($lists as $k=>$v){
             $lists[$k]['img'] = Config('service_url').$v['img'];
+            $lists[$k]['img_a'] = $v['img_a'] ? Config('service_url').$v['img_a'] : Config('service_url').$v['img'];
         }
         
         $this->successed($lists);

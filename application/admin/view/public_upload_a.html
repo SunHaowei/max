@@ -46,13 +46,13 @@
         {/if}
 
         <!--banner大图 img字段判断是否来自文章模型-->
-        {if condition="isset($item['img'])and $item['img'] neq null" }
+        {if condition="isset($item['img_a'])and $item['img_a'] neq null" }
             <div class="picture_item">
-                <img src="{$item['img']}" width="110" height="110">
+                <img src="{$item['img_a']}" width="110" height="110">
                 <div class="upload_success"></div>
                 <div class="index_picture">设为封面</div>
                 <div class="layui-layer-ico picture_del "></div>
-                <input type="hidden" name="pic_url[]" value="{$item['img']}" />
+                <input type="hidden" name="pic_url_a[]" value="{$item['img_a']}" />
             </div>
             <div class="clear"></div>
         {/if}
